@@ -69,13 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 20,
-                    right: 10,
-                    child: ClipRRect(
-                      
-                    ),
-                  ),
+                  Positioned(top: 20, right: 10, child: ClipRRect()),
                   Positioned(
                     bottom: 50,
                     left: 16,
@@ -143,9 +137,13 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          if (index == 1) {
-          } else if (index == 2) {
-            Get.toNamed('/settings');
+          switch (index) {
+            case 1:
+              Get.toNamed('/library');
+              break;
+            case 2:
+              Get.toNamed('/settings');
+              break;
           }
         },
         items: [

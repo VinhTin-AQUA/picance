@@ -4,6 +4,7 @@ import 'package:picance/modules/image_splitting/binding/split_image_binding.dart
 import 'package:picance/modules/image_splitting/views/split_image_screen.dart';
 import 'package:picance/modules/image_upscaler/binding/upscaler_binding.dart';
 import 'package:picance/modules/image_upscaler/views/upscaler_screen.dart';
+import 'package:picance/modules/library/views/library_screen.dart';
 import 'package:picance/modules/settings/views/settings.dart';
 import 'package:picance/shared/screens/home_screen.dart';
 import 'package:picance/shared/screens/no_internet_screen.dart';
@@ -16,6 +17,7 @@ class TRoutes {
   static const settings = '/settings';
   static const splashs = '/splashs';
   static const noInternet = '/no-internet';
+  static const library = '/library';
 
   static String getInitialRoute() {
     return splashs;
@@ -66,6 +68,13 @@ class RouteGenerator {
     GetPage(
       name: TRoutes.noInternet,
       page: () => NoInternetScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: Duration(milliseconds: milliseconds),
+      curve: Curves.easeOut,
+    ),
+    GetPage(
+      name: TRoutes.library,
+      page: () => LibraryScreen(),
       transition: Transition.fadeIn,
       transitionDuration: Duration(milliseconds: milliseconds),
       curve: Curves.easeOut,

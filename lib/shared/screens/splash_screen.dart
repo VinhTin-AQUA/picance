@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picance/core/initialization/app_initializer.dart';
 import 'package:picance/core/utils/connectivity_plus_util.dart';
-import 'package:picance/modules/image_splitting/controllers/split_image_controller.dart';
 import 'package:picance/modules/settings/services/theme_service.dart';
 
 class SplashScreen extends StatefulWidget {
