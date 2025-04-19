@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:picance/modules/image_splitting/binding/split_image_binding.dart';
 import 'package:picance/modules/image_splitting/views/split_image_screen.dart';
 import 'package:picance/modules/image_upscaler/binding/upscaler_binding.dart';
 import 'package:picance/modules/image_upscaler/views/upscaler_screen.dart';
@@ -46,6 +47,7 @@ class RouteGenerator {
       transition: Transition.fadeIn,
       transitionDuration: Duration(milliseconds: milliseconds),
       curve: Curves.easeOut,
+      binding: SplitImageBinding()
     ),
     GetPage(
       name: TRoutes.settings,

@@ -1,6 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show FilteringTextInputFormatter;
-import 'package:get/utils.dart';
+import 'package:get/get.dart';
+import 'package:picance/core/constants/app_contants.dart';
+import 'package:picance/core/utils/file_picker_util.dart';
+import 'package:picance/core/utils/file_util.dart';
+import 'package:picance/modules/image_splitting/controllers/split_image_controller.dart';
+import 'package:picance/modules/image_splitting/widgets/grid_painter.dart';
+import 'package:picance/modules/image_splitting/widgets/number_input_field.dart';
+import 'package:picance/modules/image_splitting/widgets/split_dialog_loading.dart';
+import 'package:picance/shared/widgets/show_notification_dialog.dart';
 
 class SplitImageData extends ChangeNotifier {
   int _rows = 2;
@@ -32,88 +41,181 @@ class SplitImageScreen extends StatefulWidget {
 class _SplitImageScreenState extends State<SplitImageScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('split_image'.tr, style: TextStyle(color: Colors.white)),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              Row(
+    return GetBuilder<SplitImageController>(
+      builder: (builder) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              'split_image'.tr,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 children: <Widget>[
-                  const Text('Rows:'),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter
-                            .digitsOnly, // Chỉ cho nhập số
-                      ],
-                      textAlign: TextAlign.center,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                  Row(
+                    children: <Widget>[
+                      const Text('Rows:'),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: NumberInputField(
+                          initialValue: builder.rows,
+                          onValueChanged: (newValue) {
+                            builder.updateRows(
+                              newValue,
+                            ); // Cập nhật giá trị cols khi người dùng nhập
+                          },
+                        ),
                       ),
-                      controller: TextEditingController(text: '2'),
-                      onChanged: (value) {
-                        if (value.isEmpty) return;
-
-                        final intValue = int.tryParse(value);
-                        if (intValue == null || intValue < 1) {}
+                      const SizedBox(width: 24),
+                      const Text('Cols:'),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: NumberInputField(
+                          initialValue: builder.cols,
+                          onValueChanged: (newValue) {
+                            builder.updateCols(
+                              newValue,
+                            ); // Cập nhật giá trị cols khi người dùng nhập
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(),
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await pickImage(builder);
                       },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 3, // Độ nổi (bóng đổ)
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      child: Icon(Icons.add_photo_alternate_outlined),
                     ),
                   ),
-                  const SizedBox(width: 24),
-                  const Text('Cols:'),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      inputFormatters: [
-                        FilteringTextInputFormatter
-                            .digitsOnly, // Chỉ cho nhập số
-                      ],
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                      controller: TextEditingController(text: '2'),
-                      onChanged: (value) {
-                        if (value.isEmpty) return;
 
-                        final intValue = int.tryParse(value);
-                        if (intValue == null || intValue < 1) {}
-                      },
-                    ),
-                  ),
+                  builder.image == null
+                      ? SizedBox(child: Container())
+                      : Expanded(
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                const Color.fromARGB(255, 255, 255, 255),
+                                Colors.transparent,
+                              ],
+                              stops: [0.99, 1.0],
+                            ).createShader(bounds);
+                          },
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              child: Column(
+                                children: [
+                                  AspectRatio(
+                                    aspectRatio:
+                                        builder
+                                            .calculateAspectRatio(), // Tính tỷ lệ dựa trên ảnh
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: [
+                                        RawImage(
+                                          image: builder.image,
+                                          fit:
+                                              BoxFit
+                                                  .contain, // Giữ nguyên tỷ lệ
+                                        ),
+                                        CustomPaint(
+                                          painter: GridPainter(
+                                            rows: builder.rows,
+                                            columns: builder.cols,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        await start(builder);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ), // Bo góc
+                                        ),
+                                        elevation: 3, // Độ nổi (bóng đổ)
+                                        textStyle: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      child: Text('start'.tr),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Expanded(child: Container()),
-              // const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5), // Bo góc
-                    ),
-                    elevation: 3, // Độ nổi (bóng đổ)
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  child: Text('start'.tr),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
+    );
+  }
+
+  Future<void> pickImage(SplitImageController builder) async {
+    final file = await FilePickerUtil.pickFile();
+    await builder.loadImageFromAsset(file?.path);
+  }
+
+  Future<void> start(SplitImageController builder) async {
+    SplitDialogLoading.showUpscaleLoadingDialog();
+
+    final parts = await builder.splitImage();
+    String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+    int i = 1;
+    for (final part in parts) {
+      final byteData = await part.toByteData(format: ImageByteFormat.png);
+      final bytes = byteData!.buffer.asUint8List();
+      await FileUtil.saveImageToFolderFromBytes(
+        bytes,
+        "$i.png",
+        "${AppContants.appFolder}/$timeStamp",
+      );
+
+      i++;
+    }
+
+    Get.back();
+    showNotificationDialog(
+      success: true,
+      title: "successfully".tr,
+      message: "please_open_library_to_review".tr,
     );
   }
 }

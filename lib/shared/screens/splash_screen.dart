@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picance/core/initialization/app_initializer.dart';
 import 'package:picance/core/utils/connectivity_plus_util.dart';
+import 'package:picance/modules/image_splitting/controllers/split_image_controller.dart';
 import 'package:picance/modules/settings/services/theme_service.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,10 +21,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _initializeApp() async {
     Get.put(ThemeService());
+    
+
     final isCheckingInternet = await ConnectivityPlusUtil.checkInternet();
 
     if (isCheckingInternet == false) {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 2));
 
       Get.toNamed('/no-internet');
       return;
@@ -36,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // 3. Chạy garbage collector trước khi chuyển
     WidgetsBinding.instance.performReassemble();
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     // 4. Chuyển đến route chính
     Get.toNamed('/');
   }
