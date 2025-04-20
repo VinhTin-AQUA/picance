@@ -15,12 +15,14 @@ class PermissionHandlerUtil {
   }
 
   static Future<bool> requestStoragePermission() async {
-    final status = await Permission.storage.request();
+    var status = await Permission.storage.status;
 
-    if (status.isPermanentlyDenied) {
-      await openAppSettings(); // Chỉ mở Settings nếu bị từ chối vĩnh viễn
+    if (status.isGranted) {
+      return true;
     }
 
-    return status.isGranted;
+    var r = await Permission.storage.request();
+    print(r.isGranted);
+    return r.isGranted;
   }
 }

@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:picance/core/constants/app_contants.dart';
+import 'package:get/get.dart';
+import 'package:picance/core/utils/file_picker_util.dart';
+import 'package:picance/modules/library/controllers/library_controller.dart';
 
 // class LibraryScreen {}
 
@@ -13,79 +14,61 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  List<Directory> folderList = [];
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadImageFolders();
   }
 
-  Future<void> _loadImageFolders() async {
-    // Lấy đường dẫn đến thư mục Pictures
-    final picturesDir = Directory(AppContants.appFolder);
+  Future<void> _actionFolder(
+    LibraryController builder,
+    int value,
+    Directory folderToMoveImage,
+  ) async {
+    switch (value) {
+      case 1:
+        String? destFolder = await FilePickerUtil.pickFolder();
 
-    if (await picturesDir.exists()) {
-      // Lấy danh sách các thư mục con
-      final folders =
-          await picturesDir
-              .list()
-              .where((entity) => entity is Directory)
-              .cast<Directory>()
-              .toList();
+        if (destFolder == null) {
+          return;
+        }
 
-      // Sắp xếp theo thời gian (mới nhất đầu tiên)
-      folders.sort((a, b) => b.path.compareTo(a.path));
-
-      setState(() {
-        folderList = folders;
-        isLoading = false;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  // Chuyển đổi millisecondsSinceEpoch thành chuỗi ngày tháng
-  String _formatFolderName(String folderPath) {
-    try {
-      final folderName = folderPath.split('/').last;
-      final timestamp = int.tryParse(folderName);
-      if (timestamp != null) {
-        final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-        return DateFormat('dd/MM/yyyy - HH:mm:ss').format(date);
-      }
-      return folderName;
-    } catch (e) {
-      return folderPath.split('/').last;
+        await builder.moveImages(folderToMoveImage, destFolder);
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Image Gallery'), centerTitle: true),
-      body:
-          isLoading
-              ? Center(child: CircularProgressIndicator())
-              : folderList.isEmpty
-              ? Center(child: Text('No folders found'))
-              : ListView.builder(
-                itemCount: folderList.length,
-                itemBuilder: (context, index) {
-                  final folder = folderList[index];
-                  return _buildFolderSection(folder);
-                },
-              ),
+    return GetBuilder<LibraryController>(
+      builder: (builder) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Image Gallery'),
+            centerTitle: true,
+            actions: [],
+          ),
+          body:
+              isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : builder.folderList.isEmpty
+                  ? Center(child: Text('No folders found'))
+                  : ListView.builder(
+                    itemCount: builder.folderList.length,
+                    itemBuilder: (context, index) {
+                      final folder = builder.folderList[index];
+                      return _buildFolderSection(builder, folder);
+                    },
+                  ),
+        );
+      },
     );
   }
 
-  Widget _buildFolderSection(Directory folder) {
+  Widget _buildFolderSection(LibraryController builder, Directory folder) {
     return FutureBuilder<List<File>>(
-      future: _getImagesInFolder(folder),
+      future: builder.getImagesInFolder(folder),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -99,9 +82,27 @@ class _LibraryScreenState extends State<LibraryScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                _formatFolderName(folder.path),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    builder.formatFolderName(folder.path),
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  PopupMenuButton<int>(
+                    onSelected: (value) async {
+                      await _actionFolder(builder, value, folder);
+                    },
+                    itemBuilder:
+                        (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Text('Move'),
+                          ),
+                          PopupMenuItem(value: 2, child: Text('Delete')),
+                        ],
+                  ),
+                ],
               ),
             ),
             GridView.builder(
@@ -125,15 +126,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
         );
       },
     );
-  }
-
-  Future<List<File>> _getImagesInFolder(Directory folder) async {
-    try {
-      final files = await folder.list().toList();
-      return files.whereType<File>().toList();
-    } catch (e) {
-      return [];
-    }
   }
 
   void _showFullImage(BuildContext context, File imageFile) {

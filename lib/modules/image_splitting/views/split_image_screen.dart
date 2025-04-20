@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picance/core/constants/app_contants.dart';
-import 'package:picance/core/utils/file_picker_util.dart';
 import 'package:picance/core/utils/file_util.dart';
 import 'package:picance/modules/image_splitting/controllers/split_image_controller.dart';
 import 'package:picance/modules/image_splitting/widgets/grid_painter.dart';
@@ -93,7 +92,7 @@ class _SplitImageScreenState extends State<SplitImageScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await pickImage(builder);
+                        await builder.loadImageFromAsset();
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -188,24 +187,21 @@ class _SplitImageScreenState extends State<SplitImageScreen> {
     );
   }
 
-  Future<void> pickImage(SplitImageController builder) async {
-    final file = await FilePickerUtil.pickFile();
-    await builder.loadImageFromAsset(file?.path);
-  }
-
   Future<void> start(SplitImageController builder) async {
     SplitDialogLoading.showUpscaleLoadingDialog();
 
     final parts = await builder.splitImage();
     String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
     int i = 1;
+    String appFolder = AppContants.appFolder;
+
     for (final part in parts) {
       final byteData = await part.toByteData(format: ImageByteFormat.png);
       final bytes = byteData!.buffer.asUint8List();
       await FileUtil.saveImageToFolderFromBytes(
         bytes,
-        "$i.png",
-        "${AppContants.appFolder}/$timeStamp",
+        "${builder.fileName}_$i.png",
+        "$appFolder/$timeStamp",
       );
 
       i++;

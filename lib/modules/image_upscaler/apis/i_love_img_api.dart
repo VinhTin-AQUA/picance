@@ -178,6 +178,8 @@ class IloveimgApi {
         'User-Agent': _userAgent,
       };
 
+      String appFolder = AppContants.appFolder;
+
       for (int i = 0; i < serverFileNames.length; i++) {
         final formData = FormData.fromMap({
           'task': _taskId ?? '',
@@ -210,11 +212,11 @@ class IloveimgApi {
             serverFileNames[i],
           );
         } else {
-        file = await FileUtil.saveImageToFolderFromBytes(
-          imageBytes,
-          serverFileNames[i],
-          "${AppContants.appFolder}/$timeStamp",
-        );
+          file = await FileUtil.saveImageToFolderFromBytes(
+            imageBytes,
+            serverFileNames[i],
+            "$appFolder/$timeStamp",
+          );
         }
         imagePathSaved.add(file.path);
       }

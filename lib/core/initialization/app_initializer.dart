@@ -1,45 +1,38 @@
 // lib/core/initialization/app_initializer.dart
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
-import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:picance/core/constants/app_contants.dart';
+import 'package:picance/core/utils/folder_util.dart';
 import 'package:picance/core/utils/permission_handler_util.dart';
 
 class AppInitializer {
   AppInitializer._();
 
   static Future<void> initialize() async {
-    await compute(_initializeInBackground, null);
+    // Initialize in the main isolate first
+     await AppContants.init(); // Initialize constants first
+     await FolderUtil.createFolder(AppContants.appFolder); // Then use them
+
+      // Get the root isolate token in the main isolate
+    final rootIsolateToken = RootIsolateToken.instance!;
+    
+
+    await compute(_initInBackground, rootIsolateToken);
   }
 
-  static void _initializeInBackground(_) async {
-    await _createAppDirectories();
+  
+  static Future<void> _initInBackground(RootIsolateToken token) async {
+    // Initialize the messenger with the token
+    BackgroundIsolateBinaryMessenger.ensureInitialized(token);
+    
+    // Now you can safely use path_provider
+    // await FolderUtil.createFolder(AppContants.appFolder);
   }
-
-  static Future<void> _createAppDirectories() async {
-    String savingFolder = AppContants.appFolder;
-    Directory? baseDir;
-
-    // Dùng cho Android: lưu ở thư mục /Pictures/YourAppName
-    if (Platform.isAndroid) {
-      baseDir = Directory(savingFolder);
-    } else {
-      // iOS hoặc fallback: dùng documents directory
-      baseDir = await getApplicationDocumentsDirectory();
-      baseDir = Directory(path.join(baseDir.path, 'Images'));
-    }
-
-    if (!(await baseDir.exists())) {
-      await baseDir.create(recursive: true);
-    }
-  }
-
-  // check internet
 
 
   // check permission
   static Future<void> requestPermissions() async {
     await PermissionHandlerUtil.requestManageExternalStoragePermission();
+    await PermissionHandlerUtil.requestStoragePermission();
   }
 }

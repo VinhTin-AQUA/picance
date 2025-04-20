@@ -73,7 +73,6 @@ class FileUtil {
   ) async {
     Directory? baseDir;
 
-    // Dùng cho Android: lưu ở thư mục /Pictures/YourAppName
     if (Platform.isAndroid) {
       baseDir = Directory(folder);
     } else {
@@ -103,10 +102,57 @@ class FileUtil {
       final File tempFile = File(tempFilePath);
       final file = await tempFile.writeAsBytes(bytes);
 
-      return file; // Trả về đường dẫn file
+      return file; 
     } catch (e) {
-      // print('Lỗi khi lưu ảnh: $e');
       throw Exception('Failed to save image');
+    }
+  }
+
+  static Future<void> moveImage(
+    String sourcePath,
+    String destinationDir,
+  ) async {
+    try {
+      // Lấy file từ đường dẫn nguồn
+      File sourceFile = File(sourcePath);
+
+      // Kiểm tra file tồn tại
+      if (!await sourceFile.exists()) {
+        throw Exception('File nguồn không tồn tại');
+      }
+
+      // Tạo thư mục đích nếu chưa có
+      Directory(destinationDir).createSync(recursive: true);
+
+      // Lấy tên file từ đường dẫn nguồn
+      String fileName = path.basename(sourcePath);
+
+      // Tạo đường dẫn đích
+      String destinationPath = path.join(destinationDir, fileName);
+
+      // Di chuyển file
+      await sourceFile.rename(destinationPath);
+    } catch (e) {
+      await copyAndDelete(sourcePath, destinationDir);
+    }
+  }
+
+  static Future<void> copyAndDelete(
+    String sourcePath,
+    String destinationDir,
+  ) async {
+    try {
+      File sourceFile = File(sourcePath);
+      String fileName = path.basename(sourcePath);
+      String destinationPath = path.join(destinationDir, fileName);
+
+      // Copy file
+      await sourceFile.copy(destinationPath);
+
+      // Xóa file gốc
+      await sourceFile.delete();
+    } catch (e) {
+      //
     }
   }
 }

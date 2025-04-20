@@ -21,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initializeApp() async {
     Get.put(ThemeService());
     
-
     final isCheckingInternet = await ConnectivityPlusUtil.checkInternet();
 
     if (isCheckingInternet == false) {
@@ -40,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     WidgetsBinding.instance.performReassemble();
     await Future.delayed(const Duration(seconds: 2));
     // 4. Chuyển đến route chính
-    Get.toNamed('/');
+    Get.offNamed('/');
   }
 
   @override

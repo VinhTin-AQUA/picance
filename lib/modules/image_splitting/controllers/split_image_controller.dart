@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:picance/core/utils/file_picker_util.dart';
 
 class SplitImageController extends GetxController {
   int rows = 1;
   int cols = 2;
   Image? image;
+  String fileName = "";
 
   // Khởi tạo service
   Future<SplitImageController> init() async {
@@ -31,7 +33,16 @@ class SplitImageController extends GetxController {
     update();
   }
 
-  Future<void> loadImageFromAsset(String? assetPath) async {
+  Future<void> loadImageFromAsset() async {
+    final filePicked = await FilePickerUtil.pickFile();
+
+    if (filePicked == null) {
+      return;
+    }
+
+    fileName = filePicked.name;
+    final assetPath = filePicked.path;
+
     if (assetPath == null) {
       return;
     }

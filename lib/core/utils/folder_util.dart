@@ -21,4 +21,21 @@ class FolderUtil {
       await baseDir.create(recursive: true);
     }
   }
+
+  static Future<void> removeFolder(String folder) async {
+    Directory? baseDir;
+
+    // Dùng cho Android: lưu ở thư mục /Pictures/YourAppName
+    if (Platform.isAndroid) {
+      baseDir = Directory(folder);
+    } else {
+      // iOS hoặc fallback: dùng documents directory
+      baseDir = await getApplicationDocumentsDirectory();
+      baseDir = Directory(path.join(baseDir.path, 'Images'));
+    }
+
+    if ((await baseDir.exists())) {
+      await baseDir.delete();
+    }
+  }
 }

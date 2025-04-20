@@ -13,7 +13,6 @@ Future<void> main() async {
 
   runApp(MyApp());
 
-
   // Sau khi ứng dụng đã chạy, xử lý quyền
   WidgetsBinding.instance.addPostFrameCallback((_) async {
     await AppInitializer.requestPermissions();

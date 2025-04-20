@@ -3,15 +3,10 @@ import 'package:file_picker/file_picker.dart';
 class FilePickerUtil {
   FilePickerUtil._();
 
-  static Future<String> pickFolder() async {
+  static Future<String?> pickFolder() async {
     try {
       String? folderPath = await FilePicker.platform.getDirectoryPath();
-
-      if (folderPath != null) {
-        // In ra đường dẫn thư mục đã chọn
-        return folderPath;
-      }
-      return "Empty Folder";
+      return folderPath;
     } catch (e) {
       return "error";
     }
@@ -35,9 +30,7 @@ class FilePickerUtil {
 
   static Future<PlatformFile?> pickFile() async {
     try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-      );
+      final result = await FilePicker.platform.pickFiles(type: FileType.image);
 
       if (result != null) {
         return result.files[0];

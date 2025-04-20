@@ -107,6 +107,8 @@ class ImgupscalerApi {
     String timeStamp,
     bool latestSaved,
   ) async {
+
+    String appFolder = AppContants.appFolder;
     try {
       List<String> imagePathSaved = [];
 
@@ -129,7 +131,7 @@ class ImgupscalerApi {
           file = await FileUtil.saveImageToFolderFromImageUrl(
             downloadUrls,
             imageName,
-            "${AppContants.appFolder}/$timeStamp",
+            "$appFolder/$timeStamp",
           );
         }
         imagePathSaved.add(file.path);
