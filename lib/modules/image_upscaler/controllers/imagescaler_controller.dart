@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:picance/modules/image_upscaler/apis/i_love_img_api.dart';
 import 'package:picance/modules/image_upscaler/apis/img_upscaler_api.dart';
 import 'package:picance/modules/image_upscaler/models/scaler.dart';
 import 'package:picance/modules/image_upscaler/models/imgupscaler.dart';
+import 'package:image/image.dart' as img;
 import '../models/iloveimgscaler.dart';
 
 class ImageScalerController extends GetxController {
@@ -116,8 +120,30 @@ class ImageScalerController extends GetxController {
           break;
       }
     }
-
     return "please_open_library_to_review";
+  }
+
+  Future<bool> checkSizeOfImages(List<PlatformFile> platformFiles) async {
+    for (var file in platformFiles) {
+      final fileBytes = await File(file.path!).readAsBytes();
+      final sizeMB = fileBytes.lengthInBytes / (1024 * 1024);
+      final image = img.decodeImage(fileBytes);
+      if (image == null) {
+        return true;
+      }
+
+      image.getBytes();
+      final areaImagePixcel = image.width * image.height;
+      if (areaImagePixcel > 33177600) {
+        return false;
+      }
+
+      if (sizeMB > 6) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   void cancelRequest() {

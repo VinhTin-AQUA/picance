@@ -20,10 +20,6 @@ const Map<String, String> viVN = {
   'please_select_at_least_one_image': 'Chọn ít nhất 1 ảnh',
   'successfully': 'Hoàn thành',
   'please_open_library_to_review': 'Vào thư viện để xem kết quả',
-  'out_of_byte': 'Dung lượng ảnh tối đa 6MB',
-  'out_of_pxsize':
-      'Quá nhiều Megapixel cho hình ảnh. Kích thước tối đa là 33177600px',
-  'image_name': 'Tên ảnh',
   'delete_this_folder_?': 'Bạn muốn xóa file này ?',
   'move': 'Di chuyển',
   'delete': 'Xóa',
@@ -33,4 +29,9 @@ const Map<String, String> viVN = {
   'cols': 'Cột',
   'yes': 'Có',
   'cancel': 'hủy bỏ',
+  'size_too_big': 'Kích thước quá lớn',
+  'size_too_large_to_go_to_next_step':
+      'Kích thước quá lớn để chuyển sang bước tiếp theo (Tối đa 6MB và 33177600 pixel)',
+  'maximum_6mb_and_33177600_pixels_per_image':
+      'Tối đa 6MB và 33177600 pixel mỗi ảnh',
 };

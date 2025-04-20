@@ -222,8 +222,7 @@ class IloveimgApi {
       }
       return imagePathSaved;
     } catch (e) {
-      // print("❌ Error in scaling: $e");
-      return [];
+      return imageUploads;
     }
   }
 

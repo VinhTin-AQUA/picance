@@ -107,7 +107,6 @@ class ImgupscalerApi {
     String timeStamp,
     bool latestSaved,
   ) async {
-
     String appFolder = AppContants.appFolder;
     try {
       List<String> imagePathSaved = [];
@@ -138,8 +137,7 @@ class ImgupscalerApi {
       }
       return imagePathSaved;
     } catch (e) {
-      // throw Exception('Image upscaling failed: $e');
-      return [];
+      return imagePaths;
     }
   }
 

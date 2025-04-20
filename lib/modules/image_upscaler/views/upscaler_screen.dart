@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picance/config/themes/t_elevated_button_theme.dart';
@@ -6,7 +5,6 @@ import 'package:picance/modules/image_upscaler/controllers/imagescaler_controlle
 import 'package:picance/modules/image_upscaler/widgets/imgscaler_checkbox.dart';
 import 'package:picance/modules/image_upscaler/widgets/upscale_dialog_loading.dart';
 import 'package:picance/shared/widgets/show_notification_dialog.dart';
-import 'package:image/image.dart' as img;
 import '../../../core/utils/file_picker_util.dart';
 import '../models/scaler.dart';
 import '../widgets/iloveimg.dart';
@@ -34,10 +32,21 @@ class UpscaleImageScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Text(
-                          "${builder.imageFilePathPicked.length.toString()} ${"images".tr}",
-                          style: Theme.of(context).textTheme.titleSmall,
-                          softWrap: true,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${builder.imageFilePathPicked.length.toString()} ${"images".tr}",
+                              style: Theme.of(context).textTheme.titleSmall,
+                              softWrap: true,
+                            ),
+                            Text(
+                              "maximum_6mb_and_33177600_pixels_per_image".tr,
+                              style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Colors.red),
+                              softWrap: true,
+                            ),
+                          ],
                         ),
                       ),
                       ElevatedButton(
@@ -56,7 +65,7 @@ class UpscaleImageScreen extends StatelessWidget {
                         onPressed: () async {
                           await pickFiles(builder);
                         },
-                        child: const Icon(Icons.folder),
+                        child: const Icon(Icons.image),
                       ),
                     ],
                   ),
@@ -137,38 +146,16 @@ class UpscaleImageScreen extends StatelessWidget {
   static Future<void> pickFiles(ImageScalerController builder) async {
     final platformFiles = await FilePickerUtil.pickFiles();
 
-    for (var file in platformFiles) {
-      final fileBytes = await File(file.path!).readAsBytes();
+    final checkSize = await builder.checkSizeOfImages(platformFiles);
 
-      final sizeMB = fileBytes.lengthInBytes / (1024 * 1024);
+    if (checkSize == false) {
+      showNotificationDialog(
+        success: false,
+        title: "size_too_big".tr,
+        message: "size_too_large_to_go_to_next_step".tr,
+      );
 
-      final image = img.decodeImage(fileBytes);
-
-      if (image == null) {
-        return;
-      }
-
-      image.getBytes();
-
-      final areaImage = image.width * image.height;
-
-      if (areaImage > 33177600) {
-        showNotificationDialog(
-          success: false,
-          title: "out_of_pxsize".tr,
-          message: "${'image_name'.tr}: ${file.name}",
-        );
-        return;
-      }
-
-      if (sizeMB > 6) {
-        showNotificationDialog(
-          success: false,
-          title: "out_of_byte".tr,
-          message: "${'image_name'.tr}: ${file.name}",
-        );
-        return;
-      }
+      return;
     }
 
     final List<String> paths =

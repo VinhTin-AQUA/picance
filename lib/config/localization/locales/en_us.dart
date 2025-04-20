@@ -20,9 +20,6 @@ const Map<String, String> enUS = {
   'please_select_at_least_one_image': 'Please select at least one image',
   'successfully': 'Successfully',
   'please_open_library_to_review': 'Please open library to review',
-  'out_of_byte': 'Maximum size 6mb',
-  'out_of_pxsize': 'Too many Megapixel for image. Maximum is 33177600px',
-  'image_name': 'Image name',
   'delete_this_folder_?': 'Delete this folder?',
   'move': 'Move',
   'delete': 'Delete',
@@ -32,4 +29,9 @@ const Map<String, String> enUS = {
   'cols': 'Cols',
   'yes': 'Yes',
   'cancel': 'Cancel',
+  'size_too_big': 'Size too big',
+  'size_too_large_to_go_to_next_step':
+      'Size too large to go to next step (Up to 6MB and 33177600 pixels)',
+  'maximum_6mb_and_33177600_pixels_per_image':
+      'Maximum 6MB and 33177600 pixels per image',
 };
