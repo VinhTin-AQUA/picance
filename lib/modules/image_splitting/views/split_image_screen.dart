@@ -58,7 +58,7 @@ class _SplitImageScreenState extends State<SplitImageScreen> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      const Text('Rows:'),
+                      Text("${'rows'.tr}:"),
                       const SizedBox(width: 8),
                       Expanded(
                         child: NumberInputField(
@@ -71,7 +71,7 @@ class _SplitImageScreenState extends State<SplitImageScreen> {
                         ),
                       ),
                       const SizedBox(width: 24),
-                      const Text('Cols:'),
+                      Text("${'cols'.tr}:"),
                       const SizedBox(width: 8),
                       Expanded(
                         child: NumberInputField(

@@ -1,30 +1,26 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:picance/core/utils/file_picker_util.dart';
-import 'package:picance/modules/library/controllers/library_controller.dart';
+import 'package:picance/modules/gallary/controllers/library_controller.dart';
+import 'package:picance/shared/widgets/question_dialog.dart';
 
-// class LibraryScreen {}
+class FolderSection extends StatefulWidget {
+  final LibraryController builder;
+  final Directory folder;
 
-class LibraryScreen extends StatefulWidget {
-  const LibraryScreen({super.key});
+  const FolderSection({super.key, required this.builder, required this.folder});
 
   @override
-  State<LibraryScreen> createState() => _LibraryScreenState();
+  State<FolderSection> createState() => _FolderSectionState();
 }
 
-class _LibraryScreenState extends State<LibraryScreen> {
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _FolderSectionState extends State<FolderSection> {
   Future<void> _actionFolder(
     LibraryController builder,
     int value,
-    Directory folderToMoveImage,
+    Directory folder,
   ) async {
     switch (value) {
       case 1:
@@ -33,42 +29,23 @@ class _LibraryScreenState extends State<LibraryScreen> {
         if (destFolder == null) {
           return;
         }
-
-        await builder.moveImages(folderToMoveImage, destFolder);
+        await builder.moveImages(folder, destFolder);
+        break;
+      case 2:
+        questionDialog(
+          message: "delete_this_folder_?".tr,
+          onPressed: () async {
+            await builder.removeFolder(folder);
+          },
+        );
         break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LibraryController>(
-      builder: (builder) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Image Gallery'),
-            centerTitle: true,
-            actions: [],
-          ),
-          body:
-              isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : builder.folderList.isEmpty
-                  ? Center(child: Text('No folders found'))
-                  : ListView.builder(
-                    itemCount: builder.folderList.length,
-                    itemBuilder: (context, index) {
-                      final folder = builder.folderList[index];
-                      return _buildFolderSection(builder, folder);
-                    },
-                  ),
-        );
-      },
-    );
-  }
-
-  Widget _buildFolderSection(LibraryController builder, Directory folder) {
     return FutureBuilder<List<File>>(
-      future: builder.getImagesInFolder(folder),
+      future: widget.builder.getImagesInFolder(widget.folder),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -86,20 +63,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    builder.formatFolderName(folder.path),
+                    widget.builder.formatFolderName(widget.folder.path),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                   PopupMenuButton<int>(
                     onSelected: (value) async {
-                      await _actionFolder(builder, value, folder);
+                      await _actionFolder(widget.builder, value, widget.folder);
                     },
                     itemBuilder:
                         (context) => [
-                          PopupMenuItem(
-                            value: 1,
-                            child: Text('Move'),
-                          ),
-                          PopupMenuItem(value: 2, child: Text('Delete')),
+                          PopupMenuItem(value: 1, child: Text('move'.tr)),
+                          PopupMenuItem(value: 2, child: Text('delete'.tr)),
                         ],
                   ),
                 ],

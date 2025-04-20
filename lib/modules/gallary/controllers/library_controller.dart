@@ -78,4 +78,15 @@ class LibraryController extends GetxController {
     folderList.remove(folder);
     update();
   }
+
+  Future<void> removeFolder(Directory folder) async {
+    final future = await getImagesInFolder(folder);
+
+    for (final i in future) {
+      await FileUtil.removeFile(i.path);
+    }
+    await FolderUtil.removeFolder(folder.path);
+    folderList.remove(folder);
+    update();
+  }
 }

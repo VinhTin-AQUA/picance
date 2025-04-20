@@ -21,8 +21,6 @@ class _NumberInputFieldState extends State<NumberInputField> {
   @override
   void initState() {
     super.initState();
- print("=======================");
-    print(widget.initialValue);
     _controller = TextEditingController(text: widget.initialValue.toString());
   }
 

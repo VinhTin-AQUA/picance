@@ -12,8 +12,8 @@ Future<void> showNotificationDialog({
 
   switch (success) {
     case true:
-      backgroundColor = Colors.green.shade100;
-      textColor = Colors.green;
+      backgroundColor = const Color.fromARGB(255, 183, 255, 185);
+      textColor = const Color.fromARGB(255, 0, 168, 6);
       icon = Icons.check_circle;
       break;
     case false:

@@ -102,7 +102,7 @@ class FileUtil {
       final File tempFile = File(tempFilePath);
       final file = await tempFile.writeAsBytes(bytes);
 
-      return file; 
+      return file;
     } catch (e) {
       throw Exception('Failed to save image');
     }
@@ -154,5 +154,10 @@ class FileUtil {
     } catch (e) {
       //
     }
+  }
+
+  static Future<void> removeFile(String path) async {
+    File sourceFile = File(path);
+    await sourceFile.delete();
   }
 }

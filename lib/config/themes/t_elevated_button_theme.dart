@@ -8,10 +8,8 @@ class TElevatedButtonTheme {
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.grey,
           disabledBackgroundColor: Colors.grey,
-          side: BorderSide(color: Colors.indigo),
-
+          side: BorderSide(color: Colors.indigo, ),
           backgroundColor: Colors.indigo, // Màu nền
-
           foregroundColor: Colors.white, // Màu chữ/icon
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),

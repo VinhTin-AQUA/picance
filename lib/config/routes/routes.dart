@@ -4,8 +4,8 @@ import 'package:picance/modules/image_splitting/binding/split_image_binding.dart
 import 'package:picance/modules/image_splitting/views/split_image_screen.dart';
 import 'package:picance/modules/image_upscaler/binding/upscaler_binding.dart';
 import 'package:picance/modules/image_upscaler/views/upscaler_screen.dart';
-import 'package:picance/modules/library/binding/library_binding.dart';
-import 'package:picance/modules/library/views/library_screen.dart';
+import 'package:picance/modules/gallary/binding/library_binding.dart';
+import 'package:picance/modules/gallary/views/library_screen.dart';
 import 'package:picance/modules/settings/views/settings.dart';
 import 'package:picance/shared/screens/home_screen.dart';
 import 'package:picance/shared/screens/no_internet_screen.dart';
