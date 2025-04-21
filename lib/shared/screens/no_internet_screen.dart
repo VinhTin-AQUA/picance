@@ -21,12 +21,18 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
           children: [
             const Icon(Icons.wifi_off, size: 80, color: Colors.red),
             const SizedBox(height: 20),
-            const Text(
-              'Không có kết nối Internet',
+            Text(
+              'no_internet'.tr,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text('Vui lòng kiểm tra kết nối mạng và thử lại'),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'please_check_your_network_connection_and_try_again'.tr,
+                textAlign: TextAlign.center,
+              ),
+            ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () async {
@@ -41,14 +47,15 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                   isChecking = false;
                 });
                 if (isCheckingInternet == true) {
-                  Get.toNamed('/home', );
+                  Get.toNamed('/home');
                 }
               },
-              child: const Text('Thử lại'),
+              child: Text('try_again'.tr),
             ),
+            SizedBox(height: 10),
             isChecking == true
-                ? const CircularProgressIndicator()
-                : Container(),
+                ? SizedBox(height: 37, child: const CircularProgressIndicator())
+                : SizedBox(height: 37),
           ],
         ),
       ),

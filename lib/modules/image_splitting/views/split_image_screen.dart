@@ -8,7 +8,7 @@ import 'package:picance/modules/image_splitting/controllers/split_image_controll
 import 'package:picance/modules/image_splitting/widgets/grid_painter.dart';
 import 'package:picance/modules/image_splitting/widgets/number_input_field.dart';
 import 'package:picance/modules/image_splitting/widgets/split_dialog_loading.dart';
-import 'package:picance/shared/widgets/show_notification_dialog.dart';
+import 'package:picance/shared/widgets/notification_dialog.dart';
 
 class SplitImageData extends ChangeNotifier {
   int _rows = 2;

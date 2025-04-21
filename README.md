@@ -3,15 +3,7 @@
     <img src="https://cdn-icons-png.flaticon.com/512/4429/4429903.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center" style="color: red;">Auto Scaling Image Tool (Mobile)</h3>
-
-  <p align="center">
-    🖼️A great automatic image enhancement tool🖼️
-    <br />
-    <a href="./image_scaling/">Source code</a>
-    ·
-    <a href="#demo">Demo</a>
-  </p>
+  <h3 align="center" style="color: red;">Auto Scaling Image Tool</h3>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -40,12 +32,12 @@
 
 <p align="center"><img src="./images/1.jpg"  width="200" /></P>
 
-<p>This project was developed to leverage the API from the website <a src="https://www.iloveimg.com/upscale-image">iloveimg</a> to automate unlimited image uploads. Iloveimg provides image optimization, resizing, and quality improvement services through a powerful API.
+<p>This project was developed to leverage the API from the website <a src="https://www.iloveimg.com/upscale-image">iloveimg</a> and <a src="https://imgupscaler.com/">Img.Upscaler</a> to automate unlimited image uploads. Iloveimg provides image optimization, and quality improvement services through a powerful API.
 
-With this project, I integrated my application API to automate unlimited image uploads, saving time. The website initially limited uploads to 3 images at a time.</p>
+With this project, I integrated API to application to automate unlimited image uploads, saving time. The websites initially limited uploads to 3 images at a time.</p>
 
 <p>
-This tool has shortened the process, specifically just select the folder containing the images, select the folder to save the images after upscaling, select the scale level and finally wait until all the images are upscaled and downloaded.
+This tool has shortened the process, specifically just select the images from Gallary, select the scale level and finally wait until all the images are upscaled and downloaded. The result will be saved to app folder, you can review in Gallary of App and move this to Camera or other Folder on device.
 </p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -60,7 +52,12 @@ This tool has shortened the process, specifically just select the folder contain
 ### Demo
 
 <p>
+    <img src="./images/1.jpg" width="200" />
     <img src="./images/2.jpg" width="200" />
+    <img src="./images/3.jpg" width="200" />
+    <img src="./images/4.jpg" width="200" />
+    <img src="./images/5.jpg" width="200" />
+    <img src="./images/6.jpg" width="200" />
 </p>
 
 ## Getting Started With Source Code

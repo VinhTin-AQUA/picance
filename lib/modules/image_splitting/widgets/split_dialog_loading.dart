@@ -10,7 +10,7 @@ class SplitDialogLoading {
         return CustomLoadingDialog();
       },
       barrierLabel: "Barrier",
-      barrierDismissible: true,
+      barrierDismissible: false,
       barrierColor: Colors.black.withValues(alpha: 0.5),
       transitionBuilder: (_, anim, __, child) {
         return ScaleTransition(

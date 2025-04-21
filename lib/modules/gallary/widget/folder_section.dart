@@ -25,7 +25,7 @@ class _FolderSectionState extends State<FolderSection> {
     switch (value) {
       case 1:
         String? destFolder = await FilePickerUtil.pickFolder();
-
+      
         if (destFolder == null) {
           return;
         }

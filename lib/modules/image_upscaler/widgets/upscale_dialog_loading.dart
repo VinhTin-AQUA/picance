@@ -10,7 +10,7 @@ class UpscaleDialogLoading {
         return CustomLoadingDialog(cancelRequest: cancelRequest);
       },
       barrierLabel: "Barrier",
-      barrierDismissible: true,
+      barrierDismissible: false,
       barrierColor: Colors.black.withValues(alpha: 0.5),
       transitionBuilder: (_, anim, __, child) {
         return ScaleTransition(
@@ -34,6 +34,7 @@ class CustomLoadingDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = Get.mediaQuery.size;
+    
     return AlertDialog(
       content: SizedBox(
         height: size.height / 4,

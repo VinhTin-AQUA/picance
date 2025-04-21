@@ -18,7 +18,6 @@ class LibraryController extends GetxController {
   }
 
   Future<void> loadImageFolders() async {
-    // Lấy đường dẫn đến thư mục Pictures
     final picturesDir = Directory(AppContants.appFolder);
 
     if (await picturesDir.exists()) {

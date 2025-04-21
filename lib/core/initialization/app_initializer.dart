@@ -10,29 +10,26 @@ class AppInitializer {
 
   static Future<void> initialize() async {
     // Initialize in the main isolate first
-     await AppContants.init(); // Initialize constants first
-     await FolderUtil.createFolder(AppContants.appFolder); // Then use them
+    await AppContants.init(); // Initialize constants first
+    await FolderUtil.createFolder(AppContants.appFolder); // Then use them
 
-      // Get the root isolate token in the main isolate
+    // Get the root isolate token in the main isolate
     final rootIsolateToken = RootIsolateToken.instance!;
-    
 
     await compute(_initInBackground, rootIsolateToken);
   }
 
-  
   static Future<void> _initInBackground(RootIsolateToken token) async {
     // Initialize the messenger with the token
     BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    
+
     // Now you can safely use path_provider
     // await FolderUtil.createFolder(AppContants.appFolder);
   }
 
-
   // check permission
-  static Future<void> requestPermissions() async {
-    await PermissionHandlerUtil.requestManageExternalStoragePermission();
-    await PermissionHandlerUtil.requestStoragePermission();
+  static Future<bool> requestPermissions() async {
+    final r = await PermissionHandlerUtil.requestPhotoPermission();
+    return r;
   }
 }

@@ -8,6 +8,7 @@ import 'package:picance/modules/gallary/binding/library_binding.dart';
 import 'package:picance/modules/gallary/views/library_screen.dart';
 import 'package:picance/modules/settings/views/settings.dart';
 import 'package:picance/shared/screens/home_screen.dart';
+import 'package:picance/shared/screens/image_access_request_screen.dart';
 import 'package:picance/shared/screens/no_internet_screen.dart';
 import 'package:picance/shared/screens/splash_screen.dart';
 
@@ -19,6 +20,7 @@ class TRoutes {
   static const splashs = '/splashs';
   static const noInternet = '/no-internet';
   static const library = '/library';
+  static const requestAccessImage = '/request-access-image';
 
   static String getInitialRoute() {
     return splashs;
@@ -80,6 +82,13 @@ class RouteGenerator {
       transitionDuration: Duration(milliseconds: milliseconds),
       curve: Curves.easeOut,
       binding: LibraryBinding(),
+    ),
+    GetPage(
+      name: TRoutes.requestAccessImage,
+      page: () => ImageAccessRequestScreen(),
+      transition: Transition.fadeIn,
+      transitionDuration: Duration(milliseconds: milliseconds),
+      curve: Curves.easeOut,
     ),
   ];
 }

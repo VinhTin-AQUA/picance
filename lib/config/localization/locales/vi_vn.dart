@@ -34,4 +34,8 @@ const Map<String, String> viVN = {
       'Kích thước quá lớn để chuyển sang bước tiếp theo (Tối đa 6MB và 33177600 pixel)',
   'maximum_6mb_and_33177600_pixels_per_image':
       'Tối đa 6MB và 33177600 pixel mỗi ảnh',
+  'no_internet': 'Không có kết nối Internet',
+  'please_check_your_network_connection_and_try_again':
+      'Vui lòng kiểm tra kết nối mạng và thử lại',
+  'try_again': 'Thử lại',
 };

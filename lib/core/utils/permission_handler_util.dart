@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionHandlerUtil {
   PermissionHandlerUtil._();
 
-  static Future<bool> requestManageExternalStoragePermission() async {
+  static Future<bool> requestPhotoPermission() async {
     var status = await Permission.photos.status;
 
     if (status.isGranted) {
@@ -14,6 +14,10 @@ class PermissionHandlerUtil {
     return r.isGranted;
   }
 
+  static Future<void> openSettings() async {
+    await openAppSettings();
+  }
+
   static Future<bool> requestStoragePermission() async {
     var status = await Permission.storage.status;
 
@@ -22,7 +26,6 @@ class PermissionHandlerUtil {
     }
 
     var r = await Permission.storage.request();
-    print(r.isGranted);
     return r.isGranted;
   }
 }

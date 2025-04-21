@@ -11,8 +11,6 @@ import '../models/iloveimgscaler.dart';
 
 class ImageScalerController extends GetxController {
   // Danh sách các feature đã chọn (theo thứ tự)
-
-  // final selectedFeatures = <ImageScaleType>[];
   final Map<ImageScaleType, bool> selectedFeatures = {};
 
   // Map các controller

@@ -4,7 +4,8 @@ import 'package:picance/config/themes/t_elevated_button_theme.dart';
 import 'package:picance/modules/image_upscaler/controllers/imagescaler_controller.dart';
 import 'package:picance/modules/image_upscaler/widgets/imgscaler_checkbox.dart';
 import 'package:picance/modules/image_upscaler/widgets/upscale_dialog_loading.dart';
-import 'package:picance/shared/widgets/show_notification_dialog.dart';
+import 'package:picance/shared/widgets/loading_dialog.dart';
+import 'package:picance/shared/widgets/notification_dialog.dart';
 import '../../../core/utils/file_picker_util.dart';
 import '../models/scaler.dart';
 import '../widgets/iloveimg.dart';
@@ -43,7 +44,8 @@ class UpscaleImageScreen extends StatelessWidget {
                             ),
                             Text(
                               "maximum_6mb_and_33177600_pixels_per_image".tr,
-                              style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Colors.red),
+                              style: Theme.of(context).textTheme.labelSmall!
+                                  .copyWith(color: Colors.red),
                               softWrap: true,
                             ),
                           ],
@@ -60,7 +62,6 @@ class UpscaleImageScreen extends StatelessWidget {
                               Theme.of(
                                 context,
                               ).elevatedButtonTheme.style?.elevation,
-                          // ... các thuộc tính khác
                         ),
                         onPressed: () async {
                           await pickFiles(builder);
@@ -71,11 +72,9 @@ class UpscaleImageScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Divider(
-                    color: Colors.grey, // Màu của đường kẻ
-                    thickness: 2, // Độ dày
-                    height: 20, // Khoảng cách trên và dưới đường kẻ
-                    // indent: 20, // Thụt lề bên trái
-                    // endIndent: 20, // Thụt lề bên phải
+                    color: Colors.grey, 
+                    thickness: 2, 
+                    height: 20, 
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -145,7 +144,6 @@ class UpscaleImageScreen extends StatelessWidget {
 
   static Future<void> pickFiles(ImageScalerController builder) async {
     final platformFiles = await FilePickerUtil.pickFiles();
-
     final checkSize = await builder.checkSizeOfImages(platformFiles);
 
     if (checkSize == false) {

@@ -34,4 +34,7 @@ const Map<String, String> enUS = {
       'Size too large to go to next step (Up to 6MB and 33177600 pixels)',
   'maximum_6mb_and_33177600_pixels_per_image':
       'Maximum 6MB and 33177600 pixels per image',
+      'no_internet': 'No Internet',
+      'please_check_your_network_connection_and_try_again': 'Please check your network connection and try again',
+      'try_again': 'Try again',
 };
