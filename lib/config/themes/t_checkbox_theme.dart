@@ -9,7 +9,7 @@ class TCheckboxTheme {
     ),
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Colors.indigo;
+        return Color(0xffe11d48);
       }
       return Colors.transparent;
     }),
@@ -22,7 +22,7 @@ class TCheckboxTheme {
     ),
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Colors.indigo;
+        return Color(0xffe11d48);
       }
       return Colors.transparent;
     }),

@@ -60,7 +60,7 @@ class SettingsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                           border: Border(
                             bottom: BorderSide(
-                              color: Colors.indigo, // màu của border
+                              color: Color(0xFFE11D48), // màu của border
                               width: 1.2, // độ dày của border
                             ),
                           ),

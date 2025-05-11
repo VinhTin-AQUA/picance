@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:picance/core/utils/file_picker_util.dart';
 import 'package:picance/modules/gallary/controllers/library_controller.dart';
 import 'package:picance/shared/widgets/question_dialog.dart';
 
@@ -24,11 +23,8 @@ class _FolderSectionState extends State<FolderSection> {
   ) async {
     switch (value) {
       case 1:
-        String? destFolder = await FilePickerUtil.pickFolder();
-      
-        if (destFolder == null) {
-          return;
-        }
+        // String? destFolder = await FilePickerUtil.pickFolder();
+        String destFolder = '/storage/emulated/0/DCIM/Camera';
         await builder.moveImages(folder, destFolder);
         break;
       case 2:

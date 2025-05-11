@@ -62,20 +62,24 @@ class LibraryController extends GetxController {
   }
 
   Future<void> moveImages(Directory folder, String destFolder) async {
-    final future = await getImagesInFolder(folder);
-    final destinationDir = destFolder;
+    try {
+      final future = await getImagesInFolder(folder);
+      final destinationDir = destFolder;
 
-    if (future.isEmpty == true) {
-      return;
+      if (future.isEmpty == true) {
+        return;
+      }
+
+      for (final i in future) {
+        await FileUtil.moveImage(i.path, destinationDir);
+      }
+      await FolderUtil.removeFolder(folder.path);
+
+      folderList.remove(folder);
+      update();
+    } catch (e) {
+      // print(e);
     }
-
-    for (final i in future) {
-      await FileUtil.moveImage(i.path, destinationDir);
-    }
-    await FolderUtil.removeFolder(folder.path);
-
-    folderList.remove(folder);
-    update();
   }
 
   Future<void> removeFolder(Directory folder) async {

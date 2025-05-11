@@ -43,18 +43,10 @@ class CustomLoadingDialog extends StatelessWidget {
             const CircularProgressIndicator(),
             const SizedBox(height: 20),
             Text(
-              'Loading...',
+              'Wait a minute',
               style: TextStyle(fontSize: 16, color: Colors.grey[700]),
             ),
             SizedBox(height: 20),
-            SizedBox(
-              width: size.width,
-              child: Text(
-                "Result: 1",
-                textAlign: TextAlign.center,
-                style: Get.theme.textTheme.headlineSmall,
-              ),
-            ),
             SizedBox(height: 20),
             SizedBox(
               width: size.width,

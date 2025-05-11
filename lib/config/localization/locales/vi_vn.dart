@@ -38,4 +38,5 @@ const Map<String, String> viVN = {
   'please_check_your_network_connection_and_try_again':
       'Vui lòng kiểm tra kết nối mạng và thử lại',
   'try_again': 'Thử lại',
+  'select_image_please': 'Vui lòng chọn ảnh',
 };

@@ -8,8 +8,8 @@ class TElevatedButtonTheme {
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.grey,
           disabledBackgroundColor: Colors.grey,
-          side: BorderSide(color: Colors.indigo, ),
-          backgroundColor: Colors.indigo, // Màu nền
+          side: BorderSide(color: Color(0xffe11d48), ),
+          backgroundColor: Color(0xffe11d48), // Màu nền
           foregroundColor: Colors.white, // Màu chữ/icon
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -25,8 +25,8 @@ class TElevatedButtonTheme {
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.grey,
           disabledBackgroundColor: Colors.grey,
-          side: BorderSide(color: Colors.indigo),
-          backgroundColor: Colors.indigo, // Màu nền
+          side: BorderSide(color: Color(0xffe11d48)),
+          backgroundColor: Color(0xffe11d48), // Màu nền
           foregroundColor: Colors.white, // Màu chữ/icon
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),

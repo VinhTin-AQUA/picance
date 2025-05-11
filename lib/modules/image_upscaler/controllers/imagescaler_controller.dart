@@ -1,31 +1,23 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:picance/modules/image_upscaler/apis/i_love_img_api.dart';
 import 'package:picance/modules/image_upscaler/apis/img_upscaler_api.dart';
 import 'package:picance/modules/image_upscaler/models/scaler.dart';
 import 'package:picance/modules/image_upscaler/models/imgupscaler.dart';
-import 'package:image/image.dart' as img;
+
 import '../models/iloveimgscaler.dart';
 
 class ImageScalerController extends GetxController {
-  // Danh sách các feature đã chọn (theo thứ tự)
   final Map<ImageScaleType, bool> selectedFeatures = {};
-
-  // Map các controller
   final Map<ImageScaleType, Scaler> scales = {};
-
   List<String> imageFilePathPicked = [];
+  int isStarted = 0;
 
-  // Khởi tạo tất cả controllers
   @override
   void onInit() {
     _initializeControllers();
     super.onInit();
   }
 
-  // Lấy controller theo type
   T getScale<T extends Scaler>(ImageScaleType type) {
     return scales[type] as T;
   }
@@ -33,6 +25,11 @@ class ImageScalerController extends GetxController {
   void _initializeControllers() {
     selectedFeatures[ImageScaleType.iloveimg] = false;
     selectedFeatures[ImageScaleType.imgupscaler] = false;
+  }
+
+  void setIsStarted(int flag) {
+    isStarted = flag;
+    update();
   }
 
   void addScale(ImageScaleType type) {
@@ -78,7 +75,7 @@ class ImageScalerController extends GetxController {
         config.scaleRadio = newScale;
         break;
     }
-    update(); // Gọi update() để thông báo thay đổi
+    update();
   }
 
   void pickFiles(List<String> newImageFilePathPicked) {
@@ -121,29 +118,6 @@ class ImageScalerController extends GetxController {
     return "please_open_library_to_review";
   }
 
-  Future<bool> checkSizeOfImages(List<PlatformFile> platformFiles) async {
-    for (var file in platformFiles) {
-      final fileBytes = await File(file.path!).readAsBytes();
-      final sizeMB = fileBytes.lengthInBytes / (1024 * 1024);
-      final image = img.decodeImage(fileBytes);
-      if (image == null) {
-        return true;
-      }
-
-      image.getBytes();
-      final areaImagePixcel = image.width * image.height;
-      if (areaImagePixcel > 33177600) {
-        return false;
-      }
-
-      if (sizeMB > 6) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   void cancelRequest() {
     IloveimgApi.cancelRequest();
     ImgupscalerApi.cancelRequest();
@@ -151,6 +125,7 @@ class ImageScalerController extends GetxController {
 
   void resetState() {
     imageFilePathPicked = [];
+    isStarted = 0;
     update();
   }
 

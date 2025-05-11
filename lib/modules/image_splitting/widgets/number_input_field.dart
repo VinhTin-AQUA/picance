@@ -27,13 +27,25 @@ class _NumberInputFieldState extends State<NumberInputField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFFE11D48), // Màu viền khi focus
+            width: 2.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xfffda4af), // Màu viền khi không focus
+            width: 1.0,
+          ),
+        ),
+      ),
       keyboardType: TextInputType.number,
       textAlign: TextAlign.center,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      decoration: const InputDecoration(border: OutlineInputBorder()),
       controller: _controller,
       onChanged: (value) {
-       
         if (value.isEmpty) return;
 
         final intValue = int.tryParse(value) ?? 1;

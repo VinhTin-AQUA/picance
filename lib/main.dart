@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:picance/config/localization/app_translations.dart';
 import 'package:picance/config/routes/routes.dart';
 import 'package:picance/config/themes/t_app_theme.dart';
-import 'package:picance/core/initialization/app_initializer.dart';
 import 'package:picance/modules/settings/services/localization_service.dart';
 
 Future<void> main() async {

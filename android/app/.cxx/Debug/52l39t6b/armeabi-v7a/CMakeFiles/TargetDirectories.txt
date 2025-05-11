@@ -1,0 +1,2 @@
+F:/Desktop/picance/android/app/.cxx/Debug/52l39t6b/armeabi-v7a/CMakeFiles/edit_cache.dir
+F:/Desktop/picance/android/app/.cxx/Debug/52l39t6b/armeabi-v7a/CMakeFiles/rebuild_cache.dir

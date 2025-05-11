@@ -1,11 +1,15 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:picance/config/themes/t_elevated_button_theme.dart';
 import 'package:picance/modules/image_upscaler/controllers/imagescaler_controller.dart';
 import 'package:picance/modules/image_upscaler/widgets/imgscaler_checkbox.dart';
 import 'package:picance/modules/image_upscaler/widgets/upscale_dialog_loading.dart';
-import 'package:picance/shared/widgets/loading_dialog.dart';
 import 'package:picance/shared/widgets/notification_dialog.dart';
+import 'package:image/image.dart' as img;
 import '../../../core/utils/file_picker_util.dart';
 import '../models/scaler.dart';
 import '../widgets/iloveimg.dart';
@@ -71,11 +75,7 @@ class UpscaleImageScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Divider(
-                    color: Colors.grey, 
-                    thickness: 2, 
-                    height: 20, 
-                  ),
+                  Divider(color: Colors.grey, thickness: 2, height: 20),
                   SizedBox(height: 10),
                   Text(
                     'selected_methods'.tr,
@@ -122,15 +122,27 @@ class UpscaleImageScreen extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5), // Bo góc
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        elevation: 3, // Độ nổi (bóng đổ)
+                        elevation: 3,
                         textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: Text('start'.tr),
+                      child:
+                          builder.isStarted == 1
+                              ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                              : builder.isStarted == 2
+                              ? Text('start'.tr)
+                              : Text('select_image_please'.tr),
                     ),
                   ),
                 ],
@@ -144,15 +156,20 @@ class UpscaleImageScreen extends StatelessWidget {
 
   static Future<void> pickFiles(ImageScalerController builder) async {
     final platformFiles = await FilePickerUtil.pickFiles();
-    final checkSize = await builder.checkSizeOfImages(platformFiles);
 
-    if (checkSize == false) {
+    builder.setIsStarted(1);
+    await Future.delayed(Duration(milliseconds: 100));
+    
+    // Sử dụng isolate để không block UI
+    final checkSize = await checkSizeInIsolate(platformFiles);
+
+    if (!checkSize) {
+      builder.setIsStarted(0); // Reset lại trạng thái
       showNotificationDialog(
         success: false,
         title: "size_too_big".tr,
         message: "size_too_large_to_go_to_next_step".tr,
       );
-
       return;
     }
 
@@ -162,10 +179,15 @@ class UpscaleImageScreen extends StatelessWidget {
             .map((f) => f.path!)
             .toList();
 
+    builder.setIsStarted(2); // Kết thúc loading, cho phép nhấn button
     builder.pickFiles(paths);
   }
 
   static Future<void> scale(ImageScalerController builder) async {
+    if (builder.isStarted == false) {
+      return;
+    }
+
     if (builder.scales.isEmpty == true) {
       showNotificationDialog(
         success: false,
@@ -209,4 +231,31 @@ class UpscaleImageScreen extends StatelessWidget {
 
     builder.resetState();
   }
+}
+
+Future<bool> checkSizeOfImages(List<PlatformFile> platformFiles) async {
+  for (var file in platformFiles) {
+    final fileBytes = await File(file.path!).readAsBytes();
+    final sizeMB = fileBytes.lengthInBytes / (1024 * 1024);
+    final image = img.decodeImage(fileBytes);
+    if (image == null) {
+      return true;
+    }
+
+    image.getBytes();
+    final areaImagePixcel = image.width * image.height;
+    if (areaImagePixcel > 33177600) {
+      return false;
+    }
+
+    if (sizeMB > 6) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+Future<bool> checkSizeInIsolate(List<PlatformFile> files) async {
+  return await compute(checkSizeOfImages, files);
 }

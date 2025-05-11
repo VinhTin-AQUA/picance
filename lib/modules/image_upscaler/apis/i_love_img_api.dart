@@ -109,12 +109,11 @@ class IloveimgApi {
     try {
       for (int i = 0; i < imageFilePaths.length; i++) {
         final filePath = imageFilePaths[i];
-
         final fileName = path.basename(filePath);
         final file = await MultipartFile.fromFile(
           filePath,
-          filename: fileName,
-          contentType: MediaType.parse("image/png"),
+          filename: 'blob',
+          contentType: MediaType('application', 'octet-stream'),
         );
 
         final formData = FormData.fromMap({
@@ -167,7 +166,6 @@ class IloveimgApi {
     bool latestSaved,
   ) async {
     List<String> imagePathSaved = [];
-
     final serverFileNames = await _getServerFileNames(imageUploads);
     final Dio dio = Dio();
     final String scaleUrl = 'https://$_server.iloveimg.com/v1/upscale';
@@ -176,6 +174,9 @@ class IloveimgApi {
       final headers = {
         'Authorization': 'Bearer $_token',
         'User-Agent': _userAgent,
+        'Origin': 'https://www.iloveimg.com',
+        'Referer': 'https://www.iloveimg.com/',
+        'Host': '$_server.iloveimg.com',
       };
 
       String appFolder = AppContants.appFolder;
@@ -199,7 +200,6 @@ class IloveimgApi {
           ),
         );
         await Future.delayed(const Duration(seconds: 1));
-
         if (response.statusCode != 200) {
           continue;
         }

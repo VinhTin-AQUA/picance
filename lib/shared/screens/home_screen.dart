@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Color.fromARGB(255, 51, 236, 78),
-                    Color.fromARGB(255, 95, 53, 224),
+                    Color(0xffe11d48),
                   ],
                 ),
               ),
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'home'.tr),
           BottomNavigationBarItem(
-            icon: Icon(Icons.folder),
+            icon: Icon(Icons.folder,),
             label: 'library'.tr,
           ),
           BottomNavigationBarItem(

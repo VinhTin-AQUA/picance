@@ -5,6 +5,6 @@ class TRadioListTileTheme {
   TRadioListTileTheme._();
 
   static Color color() =>
-      Get.isDarkMode == false ? Colors.indigo : Colors.white;
+      Get.isDarkMode == false ? Color(0xffe11d48) : Colors.white;
 
 }

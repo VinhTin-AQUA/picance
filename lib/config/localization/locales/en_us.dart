@@ -37,4 +37,5 @@ const Map<String, String> enUS = {
       'no_internet': 'No Internet',
       'please_check_your_network_connection_and_try_again': 'Please check your network connection and try again',
       'try_again': 'Try again',
+  'select_image_please': 'Select Image',
 };

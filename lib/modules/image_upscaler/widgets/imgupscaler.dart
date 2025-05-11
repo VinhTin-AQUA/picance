@@ -53,7 +53,7 @@ class _ImgUpscalerState extends State<ImgUpscaler> {
                       borderRadius: BorderRadius.circular(5),
                       border: Border(
                         bottom: BorderSide(
-                          color: Colors.indigo, // màu của border
+                          color: Color(0xffe11d48), // màu của border
                           width: 1.2, // độ dày của border
                         ),
                       ),

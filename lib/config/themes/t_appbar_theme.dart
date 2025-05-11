@@ -4,7 +4,7 @@ class TAppbarTheme {
   TAppbarTheme._();
 
   static final lightMode = AppBarTheme(
-    backgroundColor: Colors.indigo,
+    backgroundColor: Color(0xffe11d48),
     foregroundColor: Colors.white,
     titleTextStyle: TextStyle(
       color: Colors.white,

@@ -1,0 +1,2 @@
+F:/Desktop/picance/android/app/.cxx/RelWithDebInfo/4037qx2r/x86/CMakeFiles/edit_cache.dir
+F:/Desktop/picance/android/app/.cxx/RelWithDebInfo/4037qx2r/x86/CMakeFiles/rebuild_cache.dir
